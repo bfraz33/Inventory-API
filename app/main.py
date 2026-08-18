@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from sqlalchemy import text
 from app.database import engine
 from pydantic import BaseModel
-
 from app.database import engine, Base, SessionLocal
 from app.models import Item
 
@@ -14,19 +13,20 @@ app = FastAPI(
 
 Base.metadata.create_all(bind=engine)
 
+# Class item creation for validation
 class ItemCreate(BaseModel):
     name: str
     description: str | None = None
     quantity: int
 
-
+# App root endpoint
 @app.get("/")
 def root():
     return {
         "message": "Inventory API is running"
     }
 
-
+# Testing database connection
 @app.get("/test-db")
 def test_database():
     with engine.connect() as connection:
@@ -35,6 +35,8 @@ def test_database():
             "database": result.scalar()
         }
 
+
+# Adding items to the database
 @app.post("/items")
 def create_item(item: ItemCreate):
     db = SessionLocal()

@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from pydantic_settings import BaseSettings
 
-
+# Database configuration and connection 
 class Settings(BaseSettings):
     DB_USER: str
     DB_PASSWORD: str
@@ -21,6 +21,7 @@ DATABASE_URL = (
     f"@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
 )
 
+# SQL engine
 engine = create_engine(DATABASE_URL)
 
 SessionLocal = sessionmaker(
